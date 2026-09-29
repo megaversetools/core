@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Rifts Attribute Test Harness</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #1e1e24;
+            color: #f5f5f7;
+            margin: 0;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #ffc107;
+        }
+
+        p {
+            color: #a0a0ab;
+            margin-bottom: 1.5rem;
+        }
+
+        .table-container {
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid #33333d;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 0.9rem;
+            font-family: monospace;
+        }
+
+        th {
+            background-color: #2a2a35;
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            padding: 10px 8px;
+            border-bottom: 2px solid #444;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #2a2a35;
+        }
+
+        tr:nth-child(even) {
+            background-color: #24242e;
+        }
+
+        tr:hover {
+            background-color: #323240;
+        }
+
+        .score-col {
+            font-weight: bold;
+            color: #64ffda;
+            background-color: #22222b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Rifts Attribute Exhaustive Test Suite (1–60)</h1>
+    <p>Validating formula outputs against RUE rulebook tables locally in the browser DOM.</p>
+
+    <div class="table-container">
+        <table id="test-results-table">
+            <thead>
+                <tr>
+                    <th>Value</th>
+                    <th>IQ Skill</th>
+                    <th>IQ Illus</th>
+                    <th>ME Psi</th>
+                    <th>ME Insan</th>
+                    <th>ME Poss</th>
+                    <th>MA Trust</th>
+                    <th>PS SDC Dmg</th>
+                    <th>PP Str/Pry/Dod</th>
+                    <th>PP Init</th>
+                    <th>PE Magic/Poison</th>
+                    <th>PE Coma/Death</th>
+                    <th>PB Charm/Imp</th>
+                    <th>Spd (MPH)</th>
+                    <th>Spd (KPH)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dynamically populated via JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Load your clean production logic -->
+    <script src="attributes.js"></script>
+
+    <!-- UI Rendering Script -->
+    <script>
+        function renderTestSuite() {
+            var tbody = document.querySelector("#test-results-table tbody");
+            var html = "";
+            var val;
+
+            for (val = 1; val <= 90; val++) {
+                html += "<tr>" +
+                    "<td class='score-col'>" + val + "</td>" +
+                    "<td>" + calculateSkillBonus(val) + "</td>" +
+                    "<td>" + calculateIllusionSave(val) + "</td>" +
+                    "<td>" + calculatePsiSave(val) + "</td>" +
+                    "<td>" + calculateInsanitySave(val) + "</td>" +
+                    "<td>" + calculatePossessionSave(val) + "</td>" +
+                    "<td>" + calculateTrustIntimidate(val) + "%</td>" +
+                    "<td>+" + calculateSdcDmgBonus(val) + "</td>" +
+                    "<td>+" + calculateStrPryDodBonus(val) + "</td>" +
+                    "<td>+" + calculatePpInitiativeBonus(val) + "</td>" +
+                    "<td>+" + calculateMagicPoisonSave(val) + "</td>" +
+                    "<td>+" + calculateComaDeathSave(val) + "%</td>" +
+                    "<td>" + calculateCharmImpress(val) + "%</td>" +
+                    "<td>" + convertSpdToMph(val).toFixed(1) + "</td>" +
+                    "<td>" + convertSpdToKph(val).toFixed(1) + "</td>" +
+                    "</tr>";
+            }
+
+            tbody.innerHTML = html;
+        }
+
+        // Run rendering on page load
+        window.onload = renderTestSuite;
+    </script>
+</body>
+
+</html>
